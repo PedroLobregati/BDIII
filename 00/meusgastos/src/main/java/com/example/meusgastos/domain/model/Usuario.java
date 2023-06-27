@@ -1,6 +1,6 @@
 package com.example.meusgastos.domain.model;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Collection;
 import java.util.List;
 
@@ -75,8 +75,8 @@ public class Usuario implements UserDetails {
     public Date getDatacadastro() {
         return datacadastro;
     }
-    public void setDatacadastro(Date datacadastro) {
-        this.datacadastro = datacadastro;
+    public void setDataCadastro(Date date) {
+        this.datacadastro = date;
     }
     public Date getDataInativacao() {
         return dataInativacao;
