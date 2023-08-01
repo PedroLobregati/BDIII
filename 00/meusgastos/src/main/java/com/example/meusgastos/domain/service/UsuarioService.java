@@ -7,10 +7,11 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.meusgastos.domain.dto.UsuarioRequestDTO;
-import com.example.meusgastos.domain.dto.UsuarioResponseDTO;
+import com.example.meusgastos.domain.dto.usuario.UsuarioRequestDTO;
+import com.example.meusgastos.domain.dto.usuario.UsuarioResponseDTO;
 import com.example.meusgastos.domain.exception.BadRequestException;
 import com.example.meusgastos.domain.exception.ResourceNotFoundException;
 import com.example.meusgastos.domain.model.Usuario;
@@ -24,6 +25,8 @@ public class UsuarioService implements ICRUDService<UsuarioRequestDTO, UsuarioRe
 
     @Autowired
     private ModelMapper mapper;
+
+    @Autowired private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public List<UsuarioResponseDTO> obterTodos() {
@@ -52,19 +55,24 @@ public class UsuarioService implements ICRUDService<UsuarioRequestDTO, UsuarioRe
         }
         Usuario usuario = mapper.map(dto, Usuario.class);
         usuario.setDataCadastro(new Date());
-        //encripto senha
+        String senha = passwordEncoder.encode(usuario.getSenha());
+        usuario.setSenha(senha);
+        usuario.setId(null);
         usuario = usuarioRepository.save(usuario);
         return mapper.map(usuario, UsuarioResponseDTO.class);
     }
 
     @Override
     public UsuarioResponseDTO atualizar(Long id, UsuarioRequestDTO dto) {
-        obterPorId(id);
+        UsuarioResponseDTO usuarioResponseDTO = obterPorId(id);
         if (dto.getEmail() == null || dto.getSenha() == null){
             throw new BadRequestException("Email e Senha são obrigatórios");
         }
         Usuario usuario = mapper.map(dto, Usuario.class);
+        usuario.setSenha(dto.getSenha());
         usuario.setId(id);
+        usuario.setDataCadastro(usuarioResponseDTO.getDatacadastro());
+        usuario.setDataInativacao(usuarioResponseDTO.getDataInativacao());
         usuario = usuarioRepository.save(usuario);
         return mapper.map(usuario, UsuarioResponseDTO.class);
     }

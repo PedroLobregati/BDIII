@@ -1,6 +1,6 @@
-package com.example.meusgastos.domain.dto;
+package com.example.meusgastos.domain.dto.usuario;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class UsuarioResponseDTO {
     private Long id;

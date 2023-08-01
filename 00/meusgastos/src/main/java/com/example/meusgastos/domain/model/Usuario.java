@@ -1,7 +1,7 @@
 package com.example.meusgastos.domain.model;
 
-import java.util.Date;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -15,32 +15,23 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Usuario implements UserDetails {
+public class Usuario implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @Column(name = "idUsuario")
     private Long id;
-
     private String nome;
-
     @Column(nullable = false, unique = true)
     private String email;
-
     @Column(nullable = false)
     private String senha;
-    
     @Column(columnDefinition = "TEXT")
     private String foto;
-
     @Column(nullable = false)
-    private Date datacadastro;
-
+    private Date dataCadastro;
     private Date dataInativacao;
-
     @OneToMany(mappedBy = "usuario")
     private List<Titulo> titulos;
-
 
     public Long getId() {
         return id;
@@ -72,11 +63,11 @@ public class Usuario implements UserDetails {
     public void setFoto(String foto) {
         this.foto = foto;
     }
-    public Date getDatacadastro() {
-        return datacadastro;
+    public Date getDataCadastro() {
+        return dataCadastro;
     }
-    public void setDataCadastro(Date date) {
-        this.datacadastro = date;
+    public void setDataCadastro(Date dataCadastro) {
+        this.dataCadastro = dataCadastro;
     }
     public Date getDataInativacao() {
         return dataInativacao;
@@ -90,6 +81,7 @@ public class Usuario implements UserDetails {
     public void setTitulos(List<Titulo> titulos) {
         this.titulos = titulos;
     }
+    
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
@@ -100,7 +92,7 @@ public class Usuario implements UserDetails {
     }
     @Override
     public String getUsername() {
-       return email;
+        return email;
     }
     @Override
     public boolean isAccountNonExpired() {
