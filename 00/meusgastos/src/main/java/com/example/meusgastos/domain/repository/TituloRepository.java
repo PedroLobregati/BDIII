@@ -10,8 +10,8 @@ import com.example.meusgastos.domain.model.Titulo;
 import com.example.meusgastos.domain.model.Usuario;
 
 public interface TituloRepository extends JpaRepository<Titulo, Long>{
-    @Query(nativeQuery = true, value = "SELECT * FROM public.titulo" + "WHERE data_vencimento BETWEEN TO_TIMESTAMP(:periodoInicial, 'YYYY-MM-DD hh23:MI:SS') AND " + 
-    "TO_TIMESTAMP(:periodoInicial, 'YYYY-MM-DD hh23:MI:SS')")
+    @Query(nativeQuery = true, value = "SELECT * FROM public.titulo WHERE data_vencimento BETWEEN TO_TIMESTAMP(:periodoInicial, 'YYYY-MM-DD hh24:MI:SS') AND " + 
+    "TO_TIMESTAMP(:periodoFinal, 'YYYY-MM-DD hh24:MI:SS')")
     List<Titulo>obterFluxoCaixaPorDataVencimento(
         @Param("periodoInicial") String periodoInicial,
         @Param("periodoFinal") String periodoFinal);

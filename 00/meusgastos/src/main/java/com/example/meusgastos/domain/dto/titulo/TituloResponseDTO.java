@@ -2,11 +2,14 @@ package com.example.meusgastos.domain.dto.titulo;
 
 import java.util.Date;
 import java.util.List;
+
+import com.example.meusgastos.domain.Enum.ETipoTitulo;
 import com.example.meusgastos.domain.dto.centrodecusto.CentroDeCustoResponseDTO;
 
 public class TituloResponseDTO {
     private Long id;
     private String descricao;
+    private ETipoTitulo tipo;
     private List<CentroDeCustoResponseDTO> centrosDeCustos;
     private Double valor;
     private Date dataCadastro;
@@ -68,6 +71,12 @@ public class TituloResponseDTO {
     }
     public void setObservacao(String observacao) {
         this.observacao = observacao;
+    }
+    public ETipoTitulo getTipo() {
+        return tipo;
+    }
+    public void setTipo(ETipoTitulo tipo) {
+        this.tipo = tipo;
     }
 
     
