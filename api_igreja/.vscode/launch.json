@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ApiIgrejaApplication<api_igreja>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.api_igreja.ApiIgrejaApplication",
+            "projectName": "api_igreja",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
