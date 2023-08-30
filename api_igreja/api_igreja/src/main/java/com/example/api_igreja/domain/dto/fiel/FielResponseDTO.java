@@ -3,14 +3,12 @@ package com.example.api_igreja.domain.dto.fiel;
 import java.util.Date;
 import java.util.List;
 
-import com.example.api_igreja.domain.dto.endereco.EnderecoResponseDTO;
 import com.example.api_igreja.domain.dto.sacramento.SacramentoResponseDTO;
 
 public class FielResponseDTO {
     private Long id;
     private String nome;
     private Date dataNascimento;
-    private EnderecoResponseDTO endereco;
     private String senha;
     private String email;
     private List<SacramentoResponseDTO> sacramentosRealizados;
@@ -46,12 +44,6 @@ public class FielResponseDTO {
     }
     public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
-    }
-    public EnderecoResponseDTO getEndereco() {
-        return endereco;
-    }
-    public void setEndereco(EnderecoResponseDTO endereco) {
-        this.endereco = endereco;
     }
     public String getEmail() {
         return email;

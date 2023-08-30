@@ -1,5 +1,5 @@
 package com.example.api_igreja.domain.service;
-
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.api_igreja.domain.dto.sacramento.SacramentoRequestDTO;
 import com.example.api_igreja.domain.dto.sacramento.SacramentoResponseDTO;
+import com.example.api_igreja.domain.exception.BadRequestException;
 import com.example.api_igreja.domain.exception.ResourceNotFoundException;
 import com.example.api_igreja.domain.model.Fiel;
 import com.example.api_igreja.domain.model.Sacramento;
@@ -26,22 +27,19 @@ public class SacramentoService implements ICRUDService<SacramentoRequestDTO, Sac
     private ModelMapper mapper;
 
     @Override
-    public SacramentoResponseDTO cadastrar(SacramentoRequestDTO requestDTO) {
-        Sacramento sacramento = new Sacramento();
-        BeanUtils.copyProperties(requestDTO, sacramento);
-
-        Sacramento savedSacramento = sacramentoRepository.save(sacramento);
-
-        SacramentoResponseDTO responseDTO = new SacramentoResponseDTO();
-        BeanUtils.copyProperties(savedSacramento, responseDTO);
-
-        return responseDTO;
+    public SacramentoResponseDTO cadastrar(SacramentoRequestDTO dto) {
+        Sacramento sacramento = mapper.map(dto, Sacramento.class);
+        Fiel fiel = (Fiel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        sacramento.setFiel(fiel);
+        sacramento.setId(null);
+        sacramento = sacramentoRepository.save(sacramento);
+        return mapper.map(sacramento, SacramentoResponseDTO.class);
     }
 
     @Override
     public List<SacramentoResponseDTO> obterTodos() {
         Fiel usuario = (Fiel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<Sacramento> lista = sacramentoRepository.findByUsuario(usuario);
+        List<Sacramento> lista = sacramentoRepository.findByFiel(usuario);
         return lista.stream().map(sacramento -> mapper.map(sacramento, SacramentoResponseDTO.class))
         .collect(Collectors.toList());
     }
@@ -57,19 +55,24 @@ public class SacramentoService implements ICRUDService<SacramentoRequestDTO, Sac
     }
 
     @Override
-    public SacramentoResponseDTO atualizar(Long id, SacramentoRequestDTO requestDTO) {
-        Sacramento sacramento = sacramentoRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Sacramento não encontrado com o ID: " + id));
-
-        BeanUtils.copyProperties(requestDTO, sacramento);
-
-        Sacramento updatedSacramento = sacramentoRepository.save(sacramento);
-
-        SacramentoResponseDTO responseDTO = new SacramentoResponseDTO();
-        BeanUtils.copyProperties(updatedSacramento, responseDTO);
-
-        return responseDTO;
+    public SacramentoResponseDTO atualizar(Long id, SacramentoRequestDTO dto) {
+        obterPorId(id);
+        validarSacramento(dto);
+        Sacramento sacramento = mapper.map(dto, Sacramento.class);
+        Fiel usuario = (Fiel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        sacramento.setFiel(usuario);
+        sacramento.setId(id);
+        sacramento = sacramentoRepository.save(sacramento);
+        return mapper.map(sacramento, SacramentoResponseDTO.class);
     }
+
+    private void validarSacramento(SacramentoRequestDTO dto){
+        if(dto.getTipoSacramento() == null || dto.getData() == null ||
+        dto.getHora() == null || dto.getSacerdoteCelebrante() == null){
+            throw new BadRequestException("Sacramento inválido - Campos Obrigatórios!");
+        }
+    }
+
 
     public void deletar(Long id) {
         if (!sacramentoRepository.existsById(id)) {

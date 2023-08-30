@@ -13,12 +13,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
-@Table(name = "sacramentos")
 public class Sacramento {
 
     @Id
@@ -27,7 +25,7 @@ public class Sacramento {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_sacramento", nullable = false)
+    
     private EtipoSacramento tipoSacramento;
 
     @Temporal(TemporalType.DATE)
@@ -41,24 +39,19 @@ public class Sacramento {
     @JoinColumn(name = "id_fiel")
     private Fiel fiel;
 
-    @Column
-    private String Celebrante;
+    private String sacerdoteCelebrante;
 
-    @ManyToOne
-    @JoinColumn(name = "id_capela")
-    private Capela capelaLocal;
 
     public Sacramento() {
     }
 
     public Sacramento(EtipoSacramento tipoSacramento, Date data, String hora, Fiel fiel,
-                      String Celebrante, Capela capelaLocal) {
+                      String Celebrante) {
         this.tipoSacramento = tipoSacramento;
         this.data = data;
         this.hora = hora;
         this.fiel = fiel;
-        this.Celebrante = Celebrante;
-        this.capelaLocal = capelaLocal;
+        this.sacerdoteCelebrante = Celebrante;
     }
 
     public Long getId() {
@@ -101,19 +94,11 @@ public class Sacramento {
         this.fiel = fiel;
     }
 
-    public String  getCelebrante() {
-        return  Celebrante;
+    public String  getSacerdoteCelebrante() {
+        return sacerdoteCelebrante;
     }
 
-    public void setCelebrante(String Celebrante) {
-        this.Celebrante = Celebrante;
-    }
-
-    public Capela getCapelaLocal() {
-        return capelaLocal;
-    }
-
-    public void setCapelaLocal(Capela capelaLocal) {
-        this.capelaLocal = capelaLocal;
+    public void setSacerdoteCelebrante(String Celebrante) {
+        this.sacerdoteCelebrante = Celebrante;
     }
 }

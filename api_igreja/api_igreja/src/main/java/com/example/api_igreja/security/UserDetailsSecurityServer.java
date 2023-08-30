@@ -14,13 +14,15 @@ import com.example.api_igreja.domain.repository.FielRepository;
 public class UserDetailsSecurityServer implements UserDetailsService {
     @Autowired
     private FielRepository usuarioRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
         Optional<Fiel> optUsuario = usuarioRepository.findByEmail(username);
-        if(!optUsuario.isPresent()){ //isPresent = contrario do isEmpty
+        if (!optUsuario.isPresent()) {
             throw new UsernameNotFoundException("Usuário ou senha Inválidos.");
         }
+
         return optUsuario.get();
     }
-
 }

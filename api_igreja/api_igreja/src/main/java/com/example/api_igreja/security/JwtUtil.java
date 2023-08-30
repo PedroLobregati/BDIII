@@ -17,28 +17,27 @@ import io.jsonwebtoken.security.Keys;
 public class JwtUtil {
     @Value("${auth.jwt.secret}")
     private String jwtsecret;
-    @Value("${auth.jwt-expiration-miliseg}")
+    @Value("${auth.jwt-experiation-milliseg}")
     private Long jwtExpirationMiliseg;
 
     public String gerarToken(Authentication authencation){
         Date dataExpiracao = new Date(new Date().getTime() + jwtExpirationMiliseg);
         Fiel usuario = (Fiel) authencation.getPrincipal();
-
+    
         try{
             Key secretKey = Keys.hmacShaKeyFor(jwtsecret.getBytes("UTF-8"));
+    
             return Jwts.builder()
-            .setSubject(usuario.getNome())
-            .setIssuedAt(new Date())
-            .setExpiration(dataExpiracao)
-            .signWith(secretKey)
-            .compact();
-
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-            return"";
+                .setSubject(usuario.getEmail()) 
+                .setIssuedAt(new Date())
+                .setExpiration(dataExpiracao)
+                .signWith(secretKey)
+                .compact();
+        } catch(Exception e){
+            return "";
         }
-
     }
+    
 
     private Claims getClaims(String token){
         try{
@@ -59,6 +58,7 @@ public class JwtUtil {
         }
         return claims.getSubject();
     }
+
 
     public boolean isValidToken(String token){
         Claims claims = getClaims(token);

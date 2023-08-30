@@ -50,7 +50,8 @@ public class FielService implements ICRUDService<FielRequestDTO, FielResponseDTO
         if (dto.getEmail() == null || dto.getSenha() == null){
             throw new BadRequestException("Email e Senha são obrigatórios");
         }
-        Optional <Fiel> optUsuario = fielRepository.findById(dto.getId());
+        System.out.println("-------------ID-----------  " + dto.getId());
+        Optional <Fiel> optUsuario = fielRepository.findByEmail(dto.getEmail());
         if (optUsuario.isPresent()){
             throw new BadRequestException("Já existe usuário com esse email: " + dto.getEmail());
         }
@@ -60,7 +61,7 @@ public class FielService implements ICRUDService<FielRequestDTO, FielResponseDTO
         fiel.setSenha(senha);
         fiel.setId(null);
         fiel = fielRepository.save(fiel);
-        return mapper.map(fiel,     FielResponseDTO.class);
+        return mapper.map(fiel,FielResponseDTO.class);
     }
 
     @Override
@@ -80,17 +81,16 @@ public class FielService implements ICRUDService<FielRequestDTO, FielResponseDTO
 
     @Override
     public void deletar(Long id) {
-        //APAGAR DA BASE
-        //obterPorId(id);
-        //usuarioRepository.deleteById(id);
-        //INATIVAR
-        Optional<Fiel> optUsuario = fielRepository.findById(id);
+        obterPorId(id);
+        fielRepository.deleteById(id);
+
+        /*Optional<Fiel> optUsuario = fielRepository.findById(id);
         if(optUsuario.isEmpty()){
             throw new ResourceNotFoundException("Nao foi possível encontrar o id: " + id);
         }
         Fiel fiel = optUsuario.get();
         fiel.setDataInativacao(new Date());
-        fielRepository.save(fiel);
+        fielRepository.save(fiel);*/
     }
 
 }

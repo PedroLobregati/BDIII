@@ -1,16 +1,15 @@
 package com.example.api_igreja.domain.dto.sacramento;
 
-import com.example.api_igreja.domain.dto.capela.CapelaResponseDTO;
+import com.example.api_igreja.domain.Enum.EtipoSacramento;
 import com.example.api_igreja.domain.dto.fiel.FielResponseDTO;
 
 public class SacramentoRequestDTO {
     private Long id;
-    private String tipoSacramento;
+    private EtipoSacramento tipoSacramento;
     private String data;
     private String hora;
     private FielResponseDTO fiel;
     private String sacerdoteCelebrante;
-    private CapelaResponseDTO capelaLocal;
     
     public Long getId() {
         return id;
@@ -18,10 +17,10 @@ public class SacramentoRequestDTO {
     public void setId(Long id) {
         this.id = id;
     }
-    public String getTipoSacramento() {
+    public EtipoSacramento getTipoSacramento() {
         return tipoSacramento;
     }
-    public void setTipoSacramento(String tipoSacramento) {
+    public void setTipoSacramento(EtipoSacramento tipoSacramento) {
         this.tipoSacramento = tipoSacramento;
     }
     public String getData() {
@@ -48,10 +47,5 @@ public class SacramentoRequestDTO {
     public void setSacerdoteCelebrante(String sacerdoteCelebrante) {
         this.sacerdoteCelebrante = sacerdoteCelebrante;
     }
-    public CapelaResponseDTO getCapelaLocal() {
-        return capelaLocal;
-    }
-    public void setCapelaLocal(CapelaResponseDTO capelaLocal) {
-        this.capelaLocal = capelaLocal;
-    }
+
 }

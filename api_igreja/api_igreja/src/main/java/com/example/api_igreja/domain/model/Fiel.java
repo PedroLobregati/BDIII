@@ -12,15 +12,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
-@Table(name = "fiels")
 public class Fiel implements UserDetails {
 
     @Id
@@ -44,20 +40,15 @@ public class Fiel implements UserDetails {
     private Date dataCadastro;
     private Date dataInativacao;
 
-    @ManyToOne
-    @JoinColumn(name = "id_endereco")
-    private Endereco endereco;
-
     @OneToMany(mappedBy = "fiel")
     private List<Sacramento> sacramentosRealizados;
 
     public Fiel() {
     }
 
-    public Fiel(String nome, Date dataNascimento, Endereco endereco, String email) {
+    public Fiel(String nome, Date dataNascimento, String email) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
-        this.endereco = endereco;
         this.email = email;
     }
 
@@ -83,14 +74,6 @@ public class Fiel implements UserDetails {
 
     public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
-    }
-
-    public Endereco getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
     }
 
     public String getEmail() {
